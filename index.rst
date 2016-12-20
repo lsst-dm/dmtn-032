@@ -48,4 +48,25 @@
 
    **This technote is not yet published.**
 
-   Qserv data placement and replication strategies
+Requirements
+============
+
+Provide a sharp requirements list for Data-Placement is critical in order to
+offer an efficient and well-fitted solution.
+
+Maximize high availability
+    SQL user queries must continue in case some worker nodes crashes.
+
+Minimize overall cost
+    Costs include infrastructure, sofware development, system administration and
+    maintenance.
+
+Minimize data reconstruction time
+    A node which crashes must be cloned in a minimal amount of time.
+
+Prevent data loss
+    At least one instance of each chunk must be available at any time.
+
+Maximize performances
+    - Bottleneck must be identified and quantified for each proposed architecture.
+    - Chunk placement combinations can be optimized depending on a given query set.
