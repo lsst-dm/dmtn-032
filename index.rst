@@ -62,10 +62,11 @@ Minimize overall cost
     maintenance.
 
 Minimize data reconstruction time
-    A node which crashes must be cloned in a minimal amount of time.
+    A node which crashes must be cloned in a minimal amount of time (data and application)
 
 Prevent data loss
-    At least one instance of each chunk must be available at any time.
+    At least one instance of each chunk must be available at any time on disk.
+    Archive may be managed by the system?
 
 Maximize performances
     - Bottleneck must be identified and quantified for each proposed architecture.
