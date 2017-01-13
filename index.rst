@@ -55,7 +55,7 @@ Provide a sharp requirements list for Data-Placement is critical in order to
 offer an efficient and well-fitted solution.
 
 Maximize high availability
-    SQL user queries must continue in case some worker nodes crashes.
+    SQL user queries must continue in real time in case some worker nodes crashes.
 
 Minimize overall cost
     Costs include infrastructure, sofware development, system administration and
