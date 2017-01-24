@@ -55,7 +55,7 @@ Provide a sharp requirements list for Data-Placement is critical in order to
 offer an efficient and well-fitted solution.
 
 Maximize high availability
-    SQL user queries must continue in case some worker nodes crashes.
+    SQL user queries must continue in real time in case some worker nodes crashes.
 
 Support Disaster recovery
     Define wich critical functions must be supported
@@ -65,10 +65,11 @@ Minimize overall cost
     maintenance.
 
 Minimize data reconstruction time
-    A node which crashes must be cloned in a minimal amount of time.
+    A node which crashes must be cloned in a minimal amount of time (data and application)
 
 Prevent data loss
-    At least one instance of each chunk must be available at any time.
+    At least one instance of each chunk must be available at any time on disk.
+    Archive may be managed by the system?
 
 Maximize performances
     - Bottleneck must be identified and quantified for each proposed architecture.
