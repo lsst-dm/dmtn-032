@@ -57,6 +57,9 @@ offer an efficient and well-fitted solution.
 Maximize high availability
     SQL user queries must continue in case some worker nodes crashes.
 
+Support Disaster recovery
+    Define wich critical functions must be supported
+
 Minimize overall cost
     Costs include infrastructure, sofware development, system administration and
     maintenance.
