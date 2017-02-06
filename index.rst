@@ -38,6 +38,7 @@
    Feel free to delete this instructional comment.
 
 :tocdepth: 1
+
 .. Please do not modify tocdepth; will be fixed when a new Sphinx theme is shipped.
 
 .. sectnum::
@@ -88,24 +89,45 @@ In order to provide a lower bound for data throughput, problem is simplified:
         3. joins of the ForcedSource tables with the most frequent accessed columns in the Object table
         4. scans of the full Object table or joins of it with up to three additional tables other than Source and ForcedSource
 
-So in one hour, here's an average of high volume queries which might run on
-Qserv cluster:
+.. _tab-estimated-data-throughput:
 
-Assuming Qserv cluster is build with 500 nodes:
+.. table:: The estimated data throughput for concurrent high volumes queries
 
-| Command | Description |
-| --- | --- |
-| git status | List all new or modified files |
-| git diff | Show file differences that haven't been staged |
+    +------------+----------------------+-----------------------+------------------------+
+    | Query type | Average query number | Average query latency | Data read by one query |
+    |            | at a given time      | (hour)                | (TB)                   |
+    +============+======================+=======================+========================+
+    | 1          | 16                   | 1                     | 107                    |
+    +------------+----------------------+-----------------------+------------------------+
+    | 2          | 12                   | 12                    | 5000+107               |
+    +------------+----------------------+-----------------------+------------------------+
+    | 3          | 12                   | 12                    | 1900+107               |
+    +------------+----------------------+-----------------------+------------------------+
+    | 4          | 16                   | 16                    | 107+55                 |
+    +------------+----------------------+-----------------------+------------------------+
+    
+.. table:: The estimated data throughput for one node, assuming Qserv cluster is build with 500 nodes
 
-| Query type  | Average number of queries at a given time | Average query latency (hour) | Data read by one query (TB) | Data read by one query in one hour on one node (TB) |
-| --- | --- | --- | --- | --- |
-| 1 | 16 | 1 | 107 | 0.214 |
-| 2 | 12 | 12 | 5000+107 | 0.8511 |
-| 3 | 12 | 12 | 1900+107 | 0.3345 |
-| 4 | 16 | 16 | 107+55 | 0.02025 |
+    +------------+------------------------------+
+    | Query type | Data read by one query       |
+    |            | in one hour on one node (TB) |
+    +============+==============================+
+    | 1          | 0.214                        |
+    +------------+------------------------------+
+    | 2          | 0.8511                       |
+    +------------+------------------------------+
+    | 3          | 0.3345                       |
+    +------------+------------------------------+
+    | 4          | 0.02025                      |
+    +------------+------------------------------+
 
-Assuming shared scans are optimal (i.e. each table is only read once for concurrent queries), total data read in one hour on one node would be: 1.41985 TB, so 394 MB/sec
-(0.214+0.8511+0.3345+0.02025 = 1.41985)
-Without shared scans, total data read in one hour on one node would be: 17.9752 TB, so 4993 MB/sec
-(0.214*16+0.8511*12+0.3345*12+0.02025*16 = 17.9752)
+
+.. Formula: 0.214+0.8511+0.3345+0.02025 = 1.41985
+
+**With optimal shared scans** (i.e. each table is only read once for concurrent queries), data throughput on one node is: **394 MB/sec**
+
+.. Formula: 0.214*16+0.8511*12+0.3345*12+0.02025*16 = 17.9752
+
+**Without shared scans**, data throughput on one node is: **4993 MB/sec**
+
+
