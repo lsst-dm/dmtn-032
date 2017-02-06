@@ -74,3 +74,38 @@ Prevent data loss
 Maximize performances
     - Bottleneck must be identified and quantified for each proposed architecture.
     - Chunk placement combinations can be optimized depending on a given query set.
+
+Data throughput
+---------------
+
+Based on http://ldm-135.readthedocs.io/en/master/#requirements
+
+In order to provide a lower bound for data throughput, problem is simplified: 
+    - low volume queries are ignored.
+    - high volume queries are splitted in following groups:
+        1. full scan of Object table
+        2. joins of the Source tables with the most frequent accessed columns in the Object table
+        3. joins of the ForcedSource tables with the most frequent accessed columns in the Object table
+        4. scans of the full Object table or joins of it with up to three additional tables other than Source and ForcedSource
+
+So in one hour, here's an average of high volume queries which might run on
+Qserv cluster:
+
+Assuming Qserv cluster is build with 500 nodes:
+
+| Command | Description |
+| --- | --- |
+| git status | List all new or modified files |
+| git diff | Show file differences that haven't been staged |
+
+| Query type  | Average number of queries at a given time | Average query latency (hour) | Data read by one query (TB) | Data read by one query in one hour on one node (TB) |
+| --- | --- | --- | --- | --- |
+| 1 | 16 | 1 | 107 | 0.214 |
+| 2 | 12 | 12 | 5000+107 | 0.8511 |
+| 3 | 12 | 12 | 1900+107 | 0.3345 |
+| 4 | 16 | 16 | 107+55 | 0.02025 |
+
+Assuming shared scans are optimal (i.e. each table is only read once for concurrent queries), total data read in one hour on one node would be: 1.41985 TB, so 394 MB/sec
+(0.214+0.8511+0.3345+0.02025 = 1.41985)
+Without shared scans, total data read in one hour on one node would be: 17.9752 TB, so 4993 MB/sec
+(0.214*16+0.8511*12+0.3345*12+0.02025*16 = 17.9752)
