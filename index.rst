@@ -45,10 +45,6 @@
 
 .. Add content below. Do not include the document title.
 
-.. note::
-
-   **This technote is not yet published.**
-
 Requirements
 ============
 
@@ -56,10 +52,8 @@ Provide a sharp requirements list for Data-Placement is critical in order to
 offer an efficient and well-fitted solution.
 
 Maximize high availability
-    SQL user queries must continue in real time in case some worker nodes crashes.
-
-Support Disaster recovery
-    Define wich critical functions must be supported
+    SQL user queries must continue in real time, if less than 2% worker nodes
+    crashes. 
 
 Minimize overall cost
     Costs include infrastructure, sofware development, system administration and
@@ -69,48 +63,58 @@ Minimize data reconstruction time
     A node which crashes must be cloned in a minimal amount of time (data and application)
 
 Prevent data loss
-    At least one instance of each chunk must be available at any time on disk.
-    Archive may be managed by the system?
+    At least one instance of each chunk must be available at any time on disk,
+    even in case 5% of storage is definitly lost.
+    Archive should also be managed by the system in order to reduce cost. 
 
 Maximize performances
     - Bottleneck must be identified and quantified for each proposed architecture.
     - Chunk placement combinations can be optimized depending on a given query set.
 
+Support Disaster recovery
+    At first glance, disaster recovery looks like a separate, likely unrelated concern.
+    However, when considering operations for Qserv instead of just the standing up of Qserv,
+    this all become related.
+    A first requirement is that the data recovery loading method must take into account changes
+    in hardware configs between initial load and recovery.
+
 Data throughput
----------------
+===============
 
 Based on http://ldm-135.readthedocs.io/en/master/#requirements
 
 In order to provide a lower bound for data throughput, problem is simplified: 
-    - low volume queries are ignored.
-    - high volume queries are splitted in following groups:
-        1. full scan of Object table
-        2. joins of the Source tables with the most frequent accessed columns in the Object table
-        3. joins of the ForcedSource tables with the most frequent accessed columns in the Object table
-        4. scans of the full Object table or joins of it with up to three additional tables other than Source and ForcedSource
+
+- low volume queries are ignored.
+- high volume queries are splitted in following groups:
+
+    1. full scan of Object table
+    2. joins of the Source tables with the most frequent accessed columns in the Object table
+    3. joins of the ForcedSource tables with the most frequent accessed columns in the Object table
+    4. scans of the full Object table or joins of it with up to three additional tables other than Source and ForcedSource
 
 .. _tab-estimated-data-throughput:
 
 .. table:: The estimated data throughput for concurrent high volumes queries
 
-    +------------+----------------------+-----------------------+------------------------+
-    | Query type | Average query number | Average query latency | Data read by one query |
-    |            | at a given time      | (hour)                | (TB)                   |
-    +============+======================+=======================+========================+
-    | 1          | 16                   | 1                     | 107                    |
-    +------------+----------------------+-----------------------+------------------------+
-    | 2          | 12                   | 12                    | 5000+107               |
-    +------------+----------------------+-----------------------+------------------------+
-    | 3          | 12                   | 12                    | 1900+107               |
-    +------------+----------------------+-----------------------+------------------------+
-    | 4          | 16                   | 16                    | 107+55                 |
-    +------------+----------------------+-----------------------+------------------------+
+    +------------+-----------------+-------------------+----------------------+
+    | Query type | Avg query number| Avg query latency | Data read by 1 query |
+    |            | at time t       | (hour)            | (TB)                 |
+    +============+=================+===================+======================+
+    | 1          | 16              | 1                 | 107                  |
+    +------------+-----------------+-------------------+----------------------+
+    | 2          | 12              | 12                | 5107                 |
+    +------------+-----------------+-------------------+----------------------+
+    | 3          | 12              | 12                | 2007                 |
+    +------------+-----------------+-------------------+----------------------+
+    | 4          | 16              | 16                | 163                  |
+    +------------+-----------------+-------------------+----------------------+
     
-.. table:: The estimated data throughput for one node, assuming Qserv cluster is build with 500 nodes
+.. table:: The estimated data throughput for one node, for a 500 nodes cluster
 
     +------------+------------------------------+
-    | Query type | Data read by one query       |
-    |            | in one hour on one node (TB) |
+    | Query type | Data read by 1 query         |
+    |            | in 1 hour on 1 node (TB)     |
     +============+==============================+
     | 1          | 0.214                        |
     +------------+------------------------------+
