@@ -45,6 +45,11 @@
 
 .. Add content below. Do not include the document title.
 
+.. toctree::
+   :maxdepth: 2
+
+   ceph-requirements.rst 
+
 Requirements
 ============
 
