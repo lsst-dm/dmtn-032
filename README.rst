@@ -7,20 +7,27 @@
   .. image:: https://zenodo.org/badge/doi/10.5281/zenodo.#####.svg
      :target: http://dx.doi.org/10.5281/zenodo.#####
 
-#############################
-DMTN-032 Qserv Data Placement
-#############################
+##############
+Document Title
+##############
 
-Qserv data placement and replication strategies
+DMTN-032
+========
 
-View this technote at https://dmtn-032.lsst.io or see a preview of the current version in `this repo`_.
+A short description of this document
 
+**Links:**
+
+- Publication URL: https://dmtn-032.lsst.io
+- Alternative editions: https://dmtn-032.lsst.io/v
+- GitHub repository: https://github.com/lsst-dm/dmtn-032
+- Build system: https://travis-ci.org/lsst-dm/dmtn-032
 
 
 Build this technical note
 =========================
 
-You can clone this repository and build the technote locally with `Sphinx`_
+You can clone this repository and build the technote locally with `Sphinx`_:
 
 .. code-block:: bash
 
@@ -54,9 +61,19 @@ This technote's metadata is maintained in ``metadata.yaml``.
 In this metadata you can edit the technote's title, authors, publication date, etc..
 ``metadata.yaml`` is self-documenting with inline comments.
 
+Using the bibliographies
+========================
+
+The bibliography files in ``lsstbib/`` are copies from `lsst-texmf`_.
+You can update them to the current `lsst-texmf`_ versions with::
+
+   make refresh-bib
+
+Add new bibliography items to the ``local.bib`` file in the root directory (and later add them to `lsst-texmf`_).
+
 ****
 
-Copyright 2016 AURA/LSST
+Copyright 2017 AURA/LSST
 
 This work is licensed under the Creative Commons Attribution 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by/4.0/.
 
@@ -64,3 +81,4 @@ This work is licensed under the Creative Commons Attribution 4.0 International L
 .. _DM reStructuredText Style Guide: https://developer.lsst.io/docs/rst_styleguide.html
 .. _this repo: ./index.rst
 .. _Conda: http://conda.pydata.org/docs/
+.. _lsst-texmf: https://lsst-texmf.lsst.io
